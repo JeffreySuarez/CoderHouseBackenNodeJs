@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "express": "^4.17.2",
+    "node": "^17.3.1"
+  },
+  "name": "clase-no.-7-express-avanzado",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
