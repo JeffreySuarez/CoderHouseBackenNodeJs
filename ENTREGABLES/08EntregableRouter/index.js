@@ -12,7 +12,11 @@ const listaProductos = [];
 
 //Devuelve todos los productos
 productos.get("/", (req, res) => {
-  res.send(listaProductos);
+  if (listaProductos.length === 0) {
+    res.send({ aviso: "No hay productos" });
+  } else {
+    return res.send(listaProductos);
+  }
 });
 
 //recibe y agrega un producto con su ID asignado
@@ -33,30 +37,59 @@ productos.post("/", (req, res) => {
 //devuelve un producto segun su ID
 productos.get("/:num", (req, res) => {
   let numID = req.params.num * 1;
-  let findID = listaProductos.find((item) => {
-    return item.id === numID;
-  });
 
-  res.send(findID);
+  if (listaProductos.length === 0) {
+    res.send({ aviso: "No hay productos" });
+  } else if (numID > listaProductos.length || numID < 0) {
+    res.send({ Error: "El parámetro esta fuera de rango" });
+  } else if (isNaN(numID)) {
+    res.send({ Error: "El parámetro no es un número" });
+  } else {
+    let findID = listaProductos.find((item) => {
+      return item.id === numID;
+    });
+
+    res.send(findID);
+  }
 });
 
 //eliminar producto segun su ID
 productos.delete("/:num", (req, res) => {
   let numID = req.params.num * 1;
-  let eraseID = listaProductos.splice(numID - 1, 1);
-  res.send(eraseID);
+
+  if (listaProductos.length === 0) {
+    res.send({ aviso: "No hay productos" });
+  } else if (numID > listaProductos.length || numID < 0) {
+    res.send({ Error: "El parámetro esta fuera de rango" });
+  } else if (isNaN(numID)) {
+    res.send({ Error: "El parámetro no es un número" });
+  } else {
+    let eraseID = listaProductos.splice(numID - 1, 1);
+    res.send(eraseID);
+  }
 });
 
 //actualizar un producto segun su ID
 productos.put("/:num", (req, res) => {
   let numID = req.params.num - 1;
 
-  listaProductos[numID].nombre = "nuevo nombre";
-  res.send(listaProductos);
+  if (listaProductos.length === 0) {
+    res.send({ aviso: "No hay productos" });
+  } else if (numID > listaProductos.length || numID < 0) {
+    res.send({ Error: "El parámetro esta fuera de rango" });
+  } else if (isNaN(numID)) {
+    res.send({ Error: "El parámetro no es un número" });
+  } else {
+    //le cambiare el nombre del producto segun su ID que se elija.
+    listaProductos[numID].nombre = "nuevo nombre";
+    res.send(listaProductos);
+  }
 });
 
 app.use("/productos", productos);
 app.use("/static", express.static("public"));
-app.listen(PORT, () => {
+
+const server = app.listen(PORT, () => {
   console.log(`Servidor http escuchando en http://localhost:${PORT}`);
 });
+server.on("error", (error) => console.log(`Error on Server ${error}`));
