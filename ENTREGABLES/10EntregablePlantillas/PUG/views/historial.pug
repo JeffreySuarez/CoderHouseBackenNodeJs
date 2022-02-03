@@ -1,0 +1,39 @@
+extends layout1
+
+block navBar 
+
+   
+        nav(class="navbar d-flex navbar-expand-lg navbar-light bg-light")
+            a(href="/" class="navbar-brand") Menu
+            ul(class="navbar-nav mr-auto")
+                li(class="nav-item")
+                    a(href="/" class="nav-link") Home
+                li(class="nav-item")
+                    a(href="/productos" class="nav-link") Productos
+
+
+block history
+
+        h2(style="color:crimson; font-weight: bold;") Registros cargados
+
+        if(listaProductos.length> 0) 
+            div(class="table-responsive")
+                table(class="table table-dark")
+                    tr(style="color: yellow;")
+                        th Nombre
+                        th Apellido
+                        th Edad
+                    
+                    for listaProducto of listaProductos
+                        tr
+                            td= listaProducto.name
+                            td= listaProducto.edad
+                            td= listaProducto.genero
+                            td= listaProducto.celular
+                            
+                    
+                
+            
+        else
+            h3(class="alert alert-danger") no se encontraron datos
+            

@@ -1,0 +1,58 @@
+extends layout
+
+block navBar 
+
+   
+        nav(class="navbar d-flex navbar-expand-lg navbar-light bg-light")
+            a(href="/" class="navbar-brand") Menu
+            ul(class="navbar-nav mr-auto")
+                li(class="nav-item")
+                    a(href="/" class="nav-link") Home
+                li(class="nav-item")
+                    a(href="/productos" class="nav-link") Productos
+
+
+
+
+block formulario
+
+  
+
+    h1(style="color:blue; font-weight: bold;") Registro de Productos
+    br
+
+    form(method="POST" action="/productos")
+        h2(class="text-center") Datos
+        div(class="d-flex flex-column justify-content-center")
+            span Ingrese el nombre: 
+            input(type="text" name="name")
+            br
+            span Ingrese su edad: 
+            input(type="number" name="edad")
+            br
+            span Ingrese su genero: 
+            input(type="text" name="genero")
+            br
+            span Registre su número de Celular: 
+            input(type="number" name="celular")
+        br
+
+        div(class="d-flex justify-content-center")
+            input(class="  btn-success mt-3 mb-5" type="submit" value="Registrar")
+        
+
+
+
+
+//- <nav >
+//-     <a  href="/"> Menu</a>
+//-     <ul >
+//-         <li >
+//-             <a  href="/">Home</a>
+//-         </li>
+//-         <li >
+//-             <a  href="/productos">Productos</a>
+//-         </li>
+//-     </ul>
+
+//- </nav>
