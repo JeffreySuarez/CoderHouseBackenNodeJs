@@ -1,8 +1,8 @@
 <div class="d-flex">
 <div>
-<h1 style="color:blue; font-weight: bold;" class="mt-4">Registro de Productos</h1>
+<h1 style="color:blue; font-weight: bold;" class="mt-4" >Registro de Productos</h1>
 <br>
-<form method="POST" action="/" class="w-70" >
+<form method="" action="" class="w-70" onsubmit="return mostrarProductos(this)">
     <h2 class="text-center">Datos</h2>
     <div class="d-flex flex-column justify-content-center">
         <span>Ingrese el nombre: </span>
@@ -40,16 +40,16 @@
             <tbody>
                 {{#each listaProductos}}
                 <tr>
-                    <td>
+                    <td class="nombre">
                         {{this.name}}
                     </td>
-                    <td>
+                    <td class="edad">
                         {{this.edad}}
                     </td>
-                    <td>
+                    <td class="genero">
                         {{this.genero}}
                     </td>
-                    <td>
+                    <td class="celular">
                         {{this.celular}}
                     </td>
                 </tr>

@@ -38,9 +38,9 @@ app.set("views", "public");
 
 //handlebars
 
-// app.get("/", (req, res) => {
-//   res.render("datos.hbs", { listaProductos });
-// });
+app.get("/", (req, res) => {
+  res.render("datos.hbs", { listaProductos });
+});
 // app.post("/", (req, res) => {
 //   // const data = req.body;
 //   listaProductos.push(req.body);
