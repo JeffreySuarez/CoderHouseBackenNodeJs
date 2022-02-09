@@ -28,37 +28,53 @@ app.engine(
     // partialsDir: __dirname + "/public/partials/", //ruta a las plantillas parciales
   })
 );
+
 const listaProductos = [];
+
 //establecemos el motor de plantilla que se utiliZA
 app.set("view ingine", "hbs");
 //establecemos directorio donde se encuentran los archivos de la plantilla
 app.set("views", "public");
 
-app.get("/", (req, res) => {
-  res.render("datos.hbs", { listaProductos });
-});
+//handlebars
+
 // app.get("/", (req, res) => {
 //   res.render("datos.hbs", { listaProductos });
 // });
-app.post("/", (req, res) => {
-  // const data = req.body;
-  listaProductos.push(req.body);
-  console.log(listaProductos);
-  // res.send(listaProductos);
-  res.redirect("/");
-});
+// app.post("/", (req, res) => {
+//   // const data = req.body;
+//   listaProductos.push(req.body);
+//   console.log(listaProductos);
+//   // res.send(listaProductos);
+//   res.redirect("/");
+// });
+
 //espacio publico del servidor
 app.use(express.static("public"));
 
-//incluyendo chat
+const mensajes = [];
 
 io.on("connection", (socket) => {
   console.log("Nuevo Cliente Conectado!");
+
+  //incluyendo chat-----------------------//
+
   socket.emit("mensajes", mensajes);
 
   socket.on("mensaje", (data) => {
     mensajes.push(data);
     io.sockets.emit("mensajes", mensajes);
+  });
+
+  //--------------------------------------------//
+
+  //incluyendo lista de productos---------------//
+
+  socket.emit("listaProductos", listaProductos);
+
+  socket.on("producto", (data) => {
+    listaProductos.push(data);
+    io.sockets.emit("listaProductos", listaProductos);
   });
 });
 
@@ -73,3 +89,8 @@ const connectedServer = httpServer.listen(PORT, () => {
 connectedServer.on("error", (error) => {
   console.log(`Error en el Servidor ${error}`);
 });
+
+// const server = app.listen(PORT, () => {
+//   console.log(`Servidor http escuchando en http://localhost:${PORT}`);
+// });
+// server.on("error", (error) => console.log(`Error on Server ${error}`));
