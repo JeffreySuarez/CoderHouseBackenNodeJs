@@ -12,12 +12,13 @@ const httpServer = new HttpServer(app);
 const io = new IOServer(httpServer);
 
 //------------------------------------//
-const PORT = 3000;
+
 const exphbs = require("express-handlebars");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 //configuramos handlebars
+
 app.engine(
   "hbs", //Nombre referencia a la plantilla(se usa luego en set)
   exphbs.engine({
@@ -25,11 +26,9 @@ app.engine(
     extname: "hbs", //extension a utilizar
     defaultLayout: "index.hbs", //plantilla principal
     layoutsDir: __dirname + "/public/layouts", //ruta de plantilla principal
-    // partialsDir: __dirname + "/public/partials/", //ruta a las plantillas parciales
+    partialsDir: __dirname + "/public/partials/", //ruta a las plantillas parciales
   })
 );
-
-const listaProductos = [];
 
 //establecemos el motor de plantilla que se utiliZA
 app.set("view ingine", "hbs");
@@ -39,44 +38,44 @@ app.set("views", "public");
 //handlebars
 
 app.get("/", (req, res) => {
-  res.render("datos.hbs", { listaProductos });
+  res.render("datos.hbs");
 });
-// app.post("/", (req, res) => {
-//   // const data = req.body;
-//   listaProductos.push(req.body);
-//   console.log(listaProductos);
-//   // res.send(listaProductos);
-//   res.redirect("/");
-// });
+//-----------------------------//
 
 //espacio publico del servidor
 app.use(express.static("public"));
 
-const mensajes = [];
+//================================================//
+
+const listaProductos = [];
+
+const chat = [];
 
 io.on("connection", (socket) => {
   console.log("Nuevo Cliente Conectado!");
 
   //incluyendo chat-----------------------//
 
-  socket.emit("mensajes", mensajes);
+  socket.emit("mensajeDesdeServidor", chat);
 
-  socket.on("mensaje", (data) => {
-    mensajes.push(data);
-    io.sockets.emit("mensajes", mensajes);
+  socket.on("mensajeDesdeCliente", (data) => {
+    chat.push(data);
+    io.sockets.emit("mensajeDesdeServidor", chat);
+    console.log(chat);
   });
 
-  //--------------------------------------------//
-
-  //incluyendo lista de productos---------------//
-
-  socket.emit("listaProductos", listaProductos);
-
-  socket.on("producto", (data) => {
+  socket.on("mensajeClienteProducto", (data) => {
     listaProductos.push(data);
-    io.sockets.emit("listaProductos", listaProductos);
+    io.sockets.emit("mensajeServidorProducto", listaProductos);
+    console.log(listaProductos);
   });
+
+  //====================================================//
 });
+
+//----------------------------------------//
+
+const PORT = 3000;
 
 const connectedServer = httpServer.listen(PORT, () => {
   console.log(
@@ -89,8 +88,3 @@ const connectedServer = httpServer.listen(PORT, () => {
 connectedServer.on("error", (error) => {
   console.log(`Error en el Servidor ${error}`);
 });
-
-// const server = app.listen(PORT, () => {
-//   console.log(`Servidor http escuchando en http://localhost:${PORT}`);
-// });
-// server.on("error", (error) => console.log(`Error on Server ${error}`));

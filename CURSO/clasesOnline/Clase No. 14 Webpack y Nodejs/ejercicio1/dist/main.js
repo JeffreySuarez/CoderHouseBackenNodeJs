@@ -1,0 +1,1 @@
+setTimeout((function(){console.log("hola soy frase 1")}),1e3),setTimeout((function(){console.log("hola soy frase 2")}),2e3),setTimeout((function(){console.log("hola soy frase 3")}),3e3);
